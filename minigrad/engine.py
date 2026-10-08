@@ -11,3 +11,26 @@ class Value:
     
     def __repr__(self):
         return f"Value is {self.val}"
+    
+    def __add__(self, other):
+        val = self.val + other.val
+        result = Value(val, (self, other))
+        
+        def _backward():
+            self.gradient += result.gradient
+            other.gradient += result.gradient
+            
+        result._backward = _backward #assign the function, NOT CALL IT with ()
+        return result
+    
+    def __mul__(self, other):
+        val = self.val * other.val 
+        result = Value(val, (self, other))
+        
+        def _backward():
+            self.gradient += other.val * result.gradient
+            other.gradient += self.val * result.gradient 
+            #+= becasue if both self and other are the same object i do not want to overwrite but accumulate
+            
+        result._backward = _backward
+        return result

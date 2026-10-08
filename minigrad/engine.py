@@ -64,7 +64,7 @@ class Value:
     
     def __pow__(self, other):
         val = self.val ** other
-        result = Value(val, (self))
+        result = Value(val, (self,))
         
         def _backward():
             self.gradient += result.gradient * other * self.val ** (other -1)

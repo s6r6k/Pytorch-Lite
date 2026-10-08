@@ -6,8 +6,8 @@ class Value:
         self._backward = lambda: None
     #c = a + b
     #from c's perspective, its parents are a and b, 
-    # basically the child nodes from which c was built. 
-    #the vaues that were used to produce me
+    #basically the child nodes from which c was built. 
+    #the values that were used to produce me!
     
     def __repr__(self):
         return f"Value is {self.val}"

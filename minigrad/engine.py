@@ -118,3 +118,19 @@ class Value:
         result._backward = _backward
         return result 
     
+    def relu(self):
+        if self.val > 0:
+            result = Value(self.val, (self,))
+        else:
+            result = Value(0, (self,))
+            
+        def _backward():
+            if self.val > 0:
+                self.gradient += result.gradient
+            else:
+                self.gradient += 0
+        result._backward = _backward
+        return result
+            
+        
+    

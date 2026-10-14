@@ -63,3 +63,8 @@ def test_tanh():
 def test_exp():
     a = Value(3).exp()
     assert a.val == math.exp(3)
+
+def test_relu():
+    a = Value(5).relu()
+    assert a.val == 5
+    

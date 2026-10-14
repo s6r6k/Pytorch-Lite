@@ -1,4 +1,5 @@
 from minigrad.engine import Value
+import math 
 
 def test_value_init():
     val3 = Value(3.0)
@@ -58,3 +59,7 @@ def test_truediv_ini2t():
 def test_tanh():
     a = Value(0)
     assert a.tanh().val == 0
+    
+def test_exp():
+    a = Value(3).exp()
+    assert a.val == math.exp(3)

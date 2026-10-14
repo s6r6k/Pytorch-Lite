@@ -107,3 +107,14 @@ class Value:
             
         result._backward = _backward
         return result
+    
+    def exp(self):
+        val = math.exp(self.val)
+        result = Value(val, (self,))
+        
+        def _backward():
+            self.gradient += result.gradient * val
+            
+        result._backward = _backward
+        return result 
+    

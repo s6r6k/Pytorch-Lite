@@ -1,3 +1,5 @@
+import math
+
 class Value:
     def __init__(self, val: float, children: tuple = ()):
         self.val = val
@@ -66,6 +68,7 @@ class Value:
         val = self.val ** other
         result = Value(val, (self,))
         
+        #d/dx of x^n = n*(x)^(n-1)
         def _backward():
             self.gradient += result.gradient * other * self.val ** (other -1)
             
@@ -77,4 +80,30 @@ class Value:
     def __truediv__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         return self * other ** -1
+    
+    #tanh squishes any no. into the range (-1,1). tanh 0 = 0. prevents no.s from exploding.
+    #activation functions are needed to prevent the full nn from collapsing into one linear funciton 
+    #tanh method lives in Value class bcs any op i wanna do on a number/Value needs to be in Value class la. 
+    #output = tanh(w1*x1 + w2*x2)
+    #tanh(x) = e^x - e^-x / e^x + e^-x
+    #each method needs to have a backward function because it needs to know how much gradient flows back 
+    #through this specific op,
+    #for add the gradient passes through unchanged
+    #mul, gradeitn gets scaled by another operand
+    #tanch gradient gets scaled by (1-t^2)
+    #val is not automatically a Value object because math.exp is not defined by us and returns a float
+    def tanh(self):
+        val = (math.exp(self.val) - math.exp(-self.val)) / (math.exp(self.val) + math.exp(-self.val))
+        result = Value(val, (self,))
         
+        #a ──tanh──► b ──mul──► c ──► loss
+        #a.gradient = b.gradient × (1 - val²)
+           #= 1.0        × (1 - 0.964²)
+           #= 1.0        × (1 - 0.929)
+           #= 1.0        × 0.071
+           #= 0.071
+        def _backward():
+            self.gradient += result.gradient * (1 - val ** 2)
+            
+        result._backward = _backward
+        return result

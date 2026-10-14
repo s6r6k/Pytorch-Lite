@@ -53,3 +53,8 @@ def test_truediv_init1():
 def test_truediv_ini2t():
     result = Value(3) / Value(1)
     assert result.val == 3
+    
+    #havent created eq method yet!
+def test_tanh():
+    a = Value(0)
+    assert a.tanh().val == 0

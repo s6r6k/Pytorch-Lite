@@ -68,3 +68,12 @@ def test_relu():
     a = Value(5).relu()
     assert a.val == 5
     
+def test_backward_func():
+    a = Value(2)
+    b = Value(3)
+    c = a * b #6.0
+    c.backward()
+    assert b.gradient == 2.0
+    assert a.gradient == 3.0
+    assert c.gradient == 1.0
+    

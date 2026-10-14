@@ -131,6 +131,35 @@ class Value:
                 self.gradient += 0
         result._backward = _backward
         return result
-            
-        
     
+    #works on a particular value node and what it does is that it gives me the correct grad value
+    #to every node before this in the correct order, given the curr node had grad 1
+    #i visit the prev node through the ._prev attribute which is the parents of curr node.
+    #literally need to do recursive depth first traversal
+    def backward(self):
+        self.gradient = 1 #i am the output i affect myself completely
+        #start at node d and before i add node d, i visit all of d's previous nodes and for each of those nodes before i add them i visit their _prev
+        #i go deeper until i hit a node with no _prev, a leaf, a raw input Value with not _prev
+        #so added to the list and then i bubble back up
+        visited = set()
+        result = list()
+        #recursive dfs, rather than i create my own stack will use python's call stack.
+        #so conceptually identical
+        #O(V+E) complexity 
+        #dfs traversal needed to trav this graoh in toposorted manner.
+        def topo_trav(node):
+            if node not in visited:
+                visited.add(node)
+                for child in node._prev:
+                    topo_trav(child)
+                result.append(node)
+        #now i have the full topo result where the last ele is node
+        topo_trav(self)
+        for node in result[:: -1]:
+            node._backward()
+            
+    #backward() is the public method called once on the output node. 
+    #_backward() is private method that is stored on each individual node
+    #and only knows how to update the gradident of that one node's parents. 
+    #no idea abt th rest of the graph
+    #_ is a convention to say its a private internal method not meant to be directtly touched

@@ -93,8 +93,8 @@ class Value:
     #tanch gradient gets scaled by (1-t^2)
     #val is not automatically a Value object because math.exp is not defined by us and returns a float
     def tanh(self):
-        val = (math.exp(self.val) - math.exp(-self.val)) / (math.exp(self.val) + math.exp(-self.val))
-        result = Value(val, (self,))
+        val = (self.exp() - (-self).exp()) / (self.exp() + (-self).exp())
+        ##result = Value(val, (self,))
         
         #a ──tanh──► b ──mul──► c ──► loss
         #a.gradient = b.gradient × (1 - val²)
@@ -102,11 +102,11 @@ class Value:
            #= 1.0        × (1 - 0.929)
            #= 1.0        × 0.071
            #= 0.071
-        def _backward():
-            self.gradient += result.gradient * (1 - val ** 2)
+       ## def _backward():
+          ##  self.gradient += result.gradient * (1 - val ** 2)
             
-        result._backward = _backward
-        return result
+        ##result._backward = _backward
+        return val
     
     def exp(self):
         val = math.exp(self.val)

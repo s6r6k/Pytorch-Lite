@@ -10,6 +10,7 @@ class Value:
     #from c's perspective, its parents are a and b, 
     #basically the child nodes from which c was built. 
     #the values that were used to produce me!
+    # tuple = (). means if we dont pass anything, it defaults to ()
     
     def __repr__(self):
         return f"Value is {self.val}"

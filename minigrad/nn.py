@@ -68,3 +68,18 @@ class MLP:
             result.extend(layer.parameters())
         return result
             
+    def zero_grad(self):
+        param = self.parameters()
+        #each param is a Value object
+        for p in param:
+            p.gradient = 0
+    
+
+def mse_loss(predictions: list, targets: list):
+    #target is the correct ans, each is a float 
+    #predictions is the output of mlp but is a value object
+    sum_of_squared = 0
+    zipped = zip(predictions, targets)
+    for p, t in zipped:
+        sum_of_squared += (t - p)**2
+    return sum_of_squared

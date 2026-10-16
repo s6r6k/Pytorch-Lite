@@ -10,12 +10,12 @@ ys = [1.0, -1.0, -1.0, 1.0]
 
 #1 is the output layer.
 model = MLP(3, [4, 4, 1])
-epochs = 50
+epochs = 200
 
 for i in range(epochs):
     #forward-pass
     #model only takes one input at a time rn
-    out_pred = [model(x) for x in xs]
+    out_pred = [model(x)[0] for x in xs]
     #mse loss
     loss = mse_loss(out_pred, ys)
     #zero the grad
@@ -28,6 +28,8 @@ for i in range(epochs):
         p.val -= learning_rate * p.gradient
         
     print(f"epoch: {i}, loss:{loss}")
+    print("\nfinal predictions: ")
+    for x, target in zip(xs, ys):
+        pred = model(x)[0]
+        print(f"  target: {target:5.1f}  predicted: {pred.val:.4f}")
         
-    
-    

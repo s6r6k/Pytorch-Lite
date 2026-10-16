@@ -81,5 +81,5 @@ def mse_loss(predictions: list, targets: list):
     sum_of_squared = 0
     zipped = zip(predictions, targets)
     for p, t in zipped:
-        sum_of_squared += (t - p)**2
+        sum_of_squared += (p - t)**2
     return sum_of_squared
